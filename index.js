@@ -2,7 +2,6 @@ var modal = document.getElementById("modal-box");
 var modal_content = document.getElementById("modal-content");
 var modal_close_btn = document.getElementById("modal-close-btn");
 
-var xhttp = new XMLHttpRequest();
 var imp_data0;
 
 function open_modoal_func() { modal.style.display = "block"; }
@@ -28,15 +27,15 @@ function accordian_func(cl) {
 }
 
 function load_data_func() {
+    var xhttp_imp0 = new XMLHttpRequest();
     var country_page = 'https://corona.lmao.ninja/countries';   
-    xhttp.onreadystatechange = function() {
+    xhttp_imp0.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             imp_data0 = JSON.parse(this.responseText);
-            
         }
     };
-    xhttp.open("GET", country_page, true);
-    xhttp.send();
+    xhttp_imp0.open("GET", country_page, true);
+    xhttp_imp0.send();
 }
 
 function map_func() {
@@ -47,7 +46,7 @@ function map_func() {
             highlightOnHover: false
         },
         fills: {
-            defaultFill: '#CCCCCC',
+            defaultFill: 'var(--main-bg)',
             c: '#FF0000'
         }
     });
@@ -100,8 +99,9 @@ function map_func() {
 }
 
 function data_overview_func() {
-    var overview_page = 'https://corona.lmao.ninja/all';
-    xhttp.onreadystatechange = function() {
+    var xhttp_overview = new XMLHttpRequest();
+    var overview_page = 'https://corona.lmao.ninja/all/';
+    xhttp_overview.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             jf = JSON.parse(this.responseText);
             var total_cases_num = jf["cases"];
@@ -117,8 +117,8 @@ function data_overview_func() {
             document.getElementById("deaths-cases-num").innerHTML = deaths_cases_num;
         }
     };
-    xhttp.open("GET", overview_page, true);
-    xhttp.send();
+    xhttp_overview.open("GET", overview_page, true);
+    xhttp_overview.send();
 }
 
 function country_func() {
@@ -133,10 +133,10 @@ function country_func() {
         list_start = '<div class="sub-sec sec-opts br-10 sec-boundary country-item">';
         list_name = '<span class="country-title"><h4><span>' + cntry + '<span> &nbsp; ' + plus_icon + '</h4><h4>' + total + ' Cases</h4></span>';
         list_det = '<div class="country-detail p-12">';
-        ball_today = '<div class="p-4"><br/><div class="ball-round-sm color-ball mr-8 primary-color-bg"></div> Cases Today: &nbsp; <b>' + imp_data0[i]["todayCases"] + '</b></div>';
-        ball_deaths = '<div class="p-4"><br/><div class="ball-round-sm color-ball mr-8 danger-color-bg"></div> Total Deaths: &nbsp; <b>' + imp_data0[i]["deaths"] + '</b></div>';
-        ball_today_deaths= '<div class="p-4"><br/><div class="ball-round-sm color-ball mr-8 warning-color-bg"></div> Deaths Today: &nbsp; <b>' + imp_data0[i]["todayDeaths"] + '</b></div>';
-        ball_recovered = '<div class="p-4"><br/><div class="ball-round-sm color-ball mr-8 success-color-bg"></div> Recovered: &nbsp; <b>' + imp_data0[i]["recovered"] + '</b></div>';
+        ball_today = '<div><br/><div class="ball-round-sm color-ball mr-8 primary-color-bg"></div> Cases Today: &nbsp; <b>' + imp_data0[i]["todayCases"] + '</b></div>';
+        ball_deaths = '<div><br/><div class="ball-round-sm color-ball mr-8 danger-color-bg"></div> Total Deaths: &nbsp; <b>' + imp_data0[i]["deaths"] + '</b></div>';
+        ball_today_deaths= '<div><br/><div class="ball-round-sm color-ball mr-8 warning-color-bg"></div> Deaths Today: &nbsp; <b>' + imp_data0[i]["todayDeaths"] + '</b></div>';
+        ball_recovered = '<div><br/><div class="ball-round-sm color-ball mr-8 success-color-bg"></div> Recovered: &nbsp; <b>' + imp_data0[i]["recovered"] + '</b></div>';
         list_end = '</div></div>';
         country_str += list_start + list_name + list_det + ball_today + ball_deaths + ball_today_deaths + ball_recovered + list_end;
     }
@@ -155,9 +155,9 @@ function who_func() {
 }
 
 function qa_func() {
+    var xhttp_qa = new XMLHttpRequest();
     open_modoal_func();
-    
-    xhttp.onreadystatechange = function() {
+    xhttp_qa.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             jf = JSON.parse(this.responseText);
             var qa_str = '<div><h1 class="modal-heading p-4 mb-12 underlined">Questions & Answers</h1>';
@@ -171,18 +171,19 @@ function qa_func() {
             setTimeout(accordian_func("ques"), 2000);
         }
     };
-    xhttp.open("GET", "data/qa.json", true);
-    xhttp.send();
+    xhttp_qa.open("GET", "data/qa.json", true);
+    xhttp_qa.send();
 }
 
 function news_func() {
+    var xhttp_news = new XMLHttpRequest();
     open_modoal_func();
     var k = '31be5c56b8135e47b2481357df415fg8';
     var ko = '';    
     for (var i in k) {
         ko += String.fromCharCode(k.charCodeAt(i) - 1)
     }
-    xhttp.onreadystatechange = function() {
+    xhttp_news.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             jf = JSON.parse(this.responseText);
             var news_start = news_img = news_text = news_title = news_des = news_end = '';
@@ -207,12 +208,10 @@ function news_func() {
                 }
             }
             modal_content.innerHTML = article_str;
-
-
         }
     };
-    xhttp.open("GET", "http://newsapi.org/v2/top-headlines?country=in&q=corona&apiKey="+ko, true);
-    xhttp.send();
+    xhttp_news.open("GET", "http://newsapi.org/v2/top-headlines?country=in&q=corona&apiKey="+ko, true);
+    xhttp_news.send();
 }
 
 data_overview_func();
